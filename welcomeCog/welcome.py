@@ -13,8 +13,7 @@ async def fetchMessage():
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 html = await response.text()
-                x = json.load(html)
-                print(html)
+                x = json.loads(str(html))
                 return x
     return await fetch()
 
