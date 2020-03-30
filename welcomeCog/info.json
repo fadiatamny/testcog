@@ -1,0 +1,13 @@
+{
+    "author": [
+        "Deathblade"
+    ],
+    "install_msg": "May Kanuim show you the way",
+    "name": "Welcome",
+    "short": "Sends a welcome dm thats written in a specific format to the users",
+    "description": "Sends a welcome dm thats written in a specific format to the users",
+    "requirements": ["aiohttp"],
+    "tags": [
+        "welcome"
+    ]
+}
