@@ -14,6 +14,7 @@ async def fetchMessage():
             async with session.get(url) as response:
                 html = await response.text()
                 x = json.loads(html)
+                print(x)
                 return x
     return await fetch()
 
