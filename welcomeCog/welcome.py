@@ -13,15 +13,14 @@ async def fetchMessage():
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 html = await response.text()
-                x = json.loads(html)
-                print(x)
+                x = json.load(html)
+                print(html)
                 return x
     return await fetch()
 
 def formatMessage(jsonFormat):
     try:
-        print(jsonFormat)
-        message=discord.Embed(title=str(jsonFormat['title']), description=''.join(map(str, jsonFormat['description'])), color=hex(jsonFormat['color']))      
+        message=discord.Embed(title=str(jsonFormat['title']), description=''.join(map(str, jsonFormat['description'])), color=int(jsonFormat['color'],16))      
         message.set_thumbnail(url=jsonFormat['thumbnail'])
         for field in jsonFormat['fields']:
             if(field['id']!='links'):
