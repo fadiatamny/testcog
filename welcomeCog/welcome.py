@@ -19,6 +19,7 @@ async def fetchMessage():
 
 def formatMessage(jsonFormat):
     try:
+        print(jsonFormat)
         message=discord.Embed(title=str(jsonFormat['title']), description=''.join(map(str, jsonFormat['description'])), color=hex(jsonFormat['color']))      
         message.set_thumbnail(url=jsonFormat['thumbnail'])
         for field in jsonFormat['fields']:
