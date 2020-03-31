@@ -7,7 +7,7 @@ from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import box, humanize_list, pagify
 
 url = 'https://raw.githubusercontent.com/Kanium/KanuimCogs/master/welcomeCog/data/embedded_message.json'
-allowed_guilds = {508781789737648138, 274657393936302080, 693796372092289024}
+allowed_guilds = {274657393936302080, 693796372092289024}
 
 async def fetchMessage():
     async def fetch():
