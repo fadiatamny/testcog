@@ -43,6 +43,7 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         try:
+            print(member.guild.id)
             if self.message == '':
                 self.message = await fetchMessage()
             message = formatMessage(self.message)
