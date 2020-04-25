@@ -60,7 +60,7 @@ class WelcomeCog(commands.Cog):
             message = formatMessage(self.message)
             await ctx.send(content=None, embed=message)
         except():
-            print(f'SOMETHING WENT WRONG')
+            print(f'Error Occured!')
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
