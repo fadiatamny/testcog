@@ -50,7 +50,7 @@ class WelcomeCog(commands.Cog):
         super().__init__(*args, **kwargs)
         self.message = ''
 
-    @WelcomeCog.Cog.command(name='welcomepreview', description='Shows a preview of the welcome message')
+    @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
     async def previewMessage(self, ctx):
         try:
             if ctx.guild.id not in allowed_guilds:
