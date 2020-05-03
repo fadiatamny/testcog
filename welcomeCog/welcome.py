@@ -25,7 +25,6 @@ class WelcomeCog(commands.Cog):
         self.totalLogs: int = 0
         self.toggleLogs: bool = True
         self.scheduler: bool = True
-        self.bot.loop.create_task(WelcomeCog.countReset(self))
 
     @staticmethod
     async def fetchMessage():
@@ -64,12 +63,9 @@ class WelcomeCog(commands.Cog):
 
     async def countReset(self):
         while True:
-            if not self.scheduler:
-                print('im done')
-                return
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
-            await asyncio.sleep(10)
+            await asyncio.sleep(86400)
 
 
     @commands.command(name='pullmessage', description='pulls the message from github again')
@@ -153,6 +149,7 @@ class WelcomeCog(commands.Cog):
             return
 
         self.scheduler = False;
+        print(asyncio.Task.all_tasks())
         await ctx.send('Scheduler is `OFF`')
 
     @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
