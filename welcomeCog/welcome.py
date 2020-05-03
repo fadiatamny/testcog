@@ -116,9 +116,6 @@ class WelcomeCog(commands.Cog):
     async def statistics(self, ctx: commands.Context) -> None:
         self.__checkClock()
         await ctx.trigger_typing()
-
-        statsString = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left = {3}\n------------------------\nTotal Logs = {4}'.format(
-            self.dailyJoinedCount, self.dailyLeftCount, self.totalJoinedCount, self.totalLeftCount, self.totalLogs)
         message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n')
         message.set_thumbnail(url=statsThumbnailUrl)
         message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
