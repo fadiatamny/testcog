@@ -118,9 +118,11 @@ class WelcomeCog(commands.Cog):
         await ctx.trigger_typing()
         message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n')
         message.set_thumbnail(url=statsThumbnailUrl)
-        message.add_field(name='Daily Joined\tDaily Left', value='{0}\t{1}'.format(self.dailyJoinedCount,self.dailyLeftCount), inline='True')
-        message.add_field(name='Total Joined\tTotal Left', value='{0}\t{1}'.format(self.totalJoinedCount,self.totalLeftCount), inline='True')
+        message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
+        message.add_field(name='Daily Left', value=self.dailyLeftCount, inline='True')
         message.add_field(name='Total Traffic', value=self.totalLogs, inline='False')
+        message.add_field(name='Total Joined', value=self.totalJoinedCount, inline='True')
+        message.add_field(name='Total Left', value=self.totalLeftCount, inline='True')
         await ctx.send(content=None, embed=message)
 
     @commands.command(name='resetstats', description='Resets statistics')
@@ -181,13 +183,15 @@ class WelcomeCog(commands.Cog):
             self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
                 await self.channel.send('>>> {0} has been banned from the server'.format(member.mention))
+            self.totalLeftCount += 1
+            self.dailyLeftCount += 1
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
 
     @commands.Cog.listener()
-    async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
+    async def on_member_unban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
             self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
