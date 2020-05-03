@@ -120,10 +120,8 @@ class WelcomeCog(commands.Cog):
         message.set_thumbnail(url=statsThumbnailUrl)
         message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
         message.add_field(name='Daily Left', value=self.dailyLeftCount, inline='True')
-        message.add_field(name='test', value=' \n', inline='False')
-        message.add_field(name='Total Joined', value=self.totalJoinedCount, inline='True')
+        message.add_field(name='Total Joined', value=self.totalJoinedCount, inline='False')
         message.add_field(name='Total Left', value=self.totalLeftCount, inline='True')
-        message.add_field(name='test', value=' \n', inline='False')
         message.add_field(name='Total Traffic', value=self.totalLogs, inline='False')
         await ctx.send(content=None, embed=message)
 
