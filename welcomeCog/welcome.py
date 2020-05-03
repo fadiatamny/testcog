@@ -2,8 +2,7 @@ import aiohttp
 import discord
 import json
 
-from redbot.core import Config, checks, commands
-from redbot.core.utils.chat_formatting import box, humanize_list, pagify
+from redbot.core import Config, commands
 
 url = 'https://raw.githubusercontent.com/Kanium/KaniumCogs/master/welcomeCog/data/embedded_message.json'
 

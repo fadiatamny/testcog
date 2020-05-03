@@ -1,14 +1,13 @@
 import discord
 from datetime import datetime
 
-from redbot.core import Config, checks, commands
-from redbot.core.utils.chat_formatting import box, humanize_list, pagify
+from redbot.core import Config, commands
 
 allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
 admin_roles = {'Developer', 'admin', 'Council'}
 statsThumbnailUrl = 'https://www.kanium.org/machineroom/logomachine-small.png'
 
-class TrafficTrack(commands.Cog):
+class TrafficTracker(commands.Cog):
 
     def __init__(self, bot):
         self.channel: discord.TextChannel = None
@@ -53,9 +52,9 @@ class TrafficTrack(commands.Cog):
         message.set_thumbnail(url=statsThumbnailUrl)
         message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
         message.add_field(name='Daily Left', value='{0}\n'.format(self.dailyLeftCount), inline='True')
+        message.add_field(name='Total Traffic', value=self.totalLogs, inline='False')
         message.add_field(name='Total Joined', value=self.totalJoinedCount, inline='True')
         message.add_field(name='Total Left', value=self.totalLeftCount, inline='True')
-        message.add_field(name='Total Traffic', value=self.totalLogs, inline='False')
         await ctx.send(content=None, embed=message)
 
     @commands.command(name='resetstats', description='Resets statistics')
@@ -112,6 +111,8 @@ class TrafficTrack(commands.Cog):
             self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
                 await self.channel.send('>>> {0} has been banned from the server'.format(member.mention))
+            self.totalLeftCount += 1
+            self.dailyLeftCount += 1
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
