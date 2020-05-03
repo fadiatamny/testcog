@@ -96,7 +96,7 @@ class WelcomeCog(commands.Cog):
     @commands.command(name="stats")
     async def statistics(self, ctx: commands.Context) -> None:
 
-        message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\nTotal Logs = {4}'.format(
+        message = '```py Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\nTotal Logs = {4}```'.format(
             WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalLogs)
 
         await ctx.send(message)
