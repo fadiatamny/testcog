@@ -9,7 +9,7 @@ from redbot.core.utils.chat_formatting import box, humanize_list, pagify
 url = 'https://raw.githubusercontent.com/Kanium/KaniumCogs/master/welcomeCog/data/embedded_message.json'
 
 allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
-admin_roles = {'Admin', 'Developer'}
+admin_roles = {'Developer', 'admin', 'Council'}
 
 
 class WelcomeCog(commands.Cog):
