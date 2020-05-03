@@ -186,7 +186,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has left the server'.format(member.mention))
+                await self.channel.send('>>> {0} - has left the server'.format(member.mention))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
             self.totalLogs += 1
@@ -198,7 +198,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has been banned from the server'.format(member.mention))
+                await self.channel.send('>>> {0} - has been banned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
@@ -208,7 +208,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has been unbanned from the server'.format(member.mention))
+                await self.channel.send('>>> {0} - has been unbanned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
