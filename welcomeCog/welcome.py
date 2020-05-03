@@ -145,14 +145,14 @@ class WelcomeCog(commands.Cog):
         await ctx.trigger_typing()
 
         if not self.scheduler:
-            await ctx.send('Scheduler already `OFF`')
+            await ctx.send('Scheduler is already `OFF`')
             return
-
+        len('before', len(asyncio.all_tasks()))
         self.scheduler = False
         self.task.cancel()
         self.task = None
-
-        await ctx.send('Scheduler is `OFF`')
+        len('after', len(asyncio.all_tasks()))
+        await ctx.send('Scheduler has been turned `OFF`')
 
     @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
     @commands.has_any_role(*admin_roles)
@@ -160,13 +160,13 @@ class WelcomeCog(commands.Cog):
         await ctx.trigger_typing()
 
         if self.scheduler:
-            await ctx.send('Scheduler already `ON`')
+            await ctx.send('Scheduler is already `ON`')
             return
-
+        len('before', len(asyncio.all_tasks()))
         self.scheduler = True
         self.task = self.bot.loop.create_task(self.countReset())
-
-        await ctx.send('Scheduler is `ON`')
+        print('after', len(asyncio.all_tasks()))
+        await ctx.send('Scheduler has been turned `ON`')
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
