@@ -1,5 +1,4 @@
-# TrafficTrackerCog
-This is the Kanium community/guild welcome cog. monitors the server for activity and logs them to a specific channel using the specific commands.
+# TrafficCog community/guild welcome cog. monitors the server for activity and logs them to a specific channel using the specific commands.
 
 # How to use:
 In order to use our cog you would need to install it onto your instance of [RedBot](https://github.com/Cog-Creators/Red-DiscordBot).
@@ -12,14 +11,14 @@ In order to use our cog you would need to install it onto your instance of [RedB
 
 ## How to install & load:
 1. `[PREFIX]repo add [RepoName] https://github.com/Kanium/KaniumCogs [ActiveBranch  (EX: Master)] `
-2. `[PREFIX]cog install [RepoName] trafficTrackerCog`
-3. `[PREFIX]load trafficTrackerCog`
+2. `[PREFIX]cog install [RepoName] trafficCog`
+3. `[PREFIX]load trafficCog`
 
 ### To update the Cog:
-- `[PREFIX]cog uninstall trafficTrackerCog`
+- `[PREFIX]cog uninstall trafficCog`
 - `[PREFIX]repo update [RepoName]`
-- `[PREFIX]cog install [RepoName] trafficTrackerCog`
-- `[PREFIX]load trafficTrackerCog`
+- `[PREFIX]cog install [RepoName] trafficCog`
+- `[PREFIX]load trafficCog`
 
 ### Commands
 - `[PREFIX]setchannel` - allows you to select a channel in your discord to dump logs to

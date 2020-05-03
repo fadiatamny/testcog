@@ -7,7 +7,7 @@ allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
 admin_roles = {'Developer', 'admin', 'Council'}
 statsThumbnailUrl = 'https://www.kanium.org/machineroom/logomachine-small.png'
 
-class TrafficTracker(commands.Cog):
+class TrafficCog(commands.Cog):
 
     def __init__(self, bot):
         self.channel: discord.TextChannel = None
@@ -26,9 +26,9 @@ class TrafficTracker(commands.Cog):
             self.dailyLeftCount = 0
             self.date = datetime.now()
 
-    @commands.command(name='setchannel', description='Sets the channel to sends log to')
+    @commands.command(name='settrafficchannel', description='Sets the channel to sends log to')
     @commands.has_any_role(*admin_roles)
-    async def setChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
+    async def setTrafficChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
         await ctx.trigger_typing()
 
         if not channel in ctx.guild.channels:
@@ -48,7 +48,7 @@ class TrafficTracker(commands.Cog):
     async def statistics(self, ctx: commands.Context) -> None:
         self.__checkClock()
         await ctx.trigger_typing()
-        message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n')
+        message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n',color=0x3399ff)
         message.set_thumbnail(url=statsThumbnailUrl)
         message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
         message.add_field(name='Daily Left', value='{0}\n'.format(self.dailyLeftCount), inline='True')
