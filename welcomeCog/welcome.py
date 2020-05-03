@@ -138,14 +138,14 @@ class WelcomeCog(commands.Cog):
 
     @commands.command(name='toggleLogs', description='Toggles the logs functionality on or off')
     @commands.has_any_role(*admin_roles)
-    async def statistics(self, ctx: commands.Context) -> None:
+    async def toggleLogs(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
         self.toggleLogs = not self.toggleLogs
         await ctx.send('Logging functionality is `ON`' if self.toggleLogs else 'Logging functionality is `OFF`')
 
     @commands.command(name='stopscheduler', description='Stops the daily reset scheduler')
     @commands.has_any_role(*admin_roles)
-    async def statistics(self, ctx: commands.Context) -> None:
+    async def stopScheduler(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
         if not self.scheduler:
@@ -157,7 +157,7 @@ class WelcomeCog(commands.Cog):
 
     @commands.command(name='restartscheduler', description='Restarts the daily reset scheduler')
     @commands.has_any_role(*admin_roles)
-    async def statistics(self, ctx: commands.Context) -> None:
+    async def restartScheduler(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
         if self.scheduler:
