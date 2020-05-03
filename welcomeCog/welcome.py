@@ -50,11 +50,11 @@ class WelcomeCog(commands.Cog):
     dailyJoinedCount: int = 0
     totalJoinedCount: int = 0
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, bot):
+        self.bot = bot
         self.message: str = ''
         self.channel: discord.TextChannel = None
-        commands.loop.create_task(WelcomeCog.countReset())
+        self.bot.loop.create_task(WelcomeCog.countReset())
 
     @staticmethod
     async def countReset():
@@ -93,7 +93,7 @@ class WelcomeCog(commands.Cog):
 
     @commands.command(name="stats")
     async def statistics(self, ctx: commands.Context) -> None:
-        
+
         message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {3}\tTotal Left={4}'.format(
             WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount)
 
