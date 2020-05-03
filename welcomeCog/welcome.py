@@ -67,14 +67,14 @@ class WelcomeCog(commands.Cog):
     async def logChannel(self, ctx, channel: discord.TextChannel):
 
         for ch in ctx.guild.channels:
-            if(ch.name == channel.name):
-                self.channel = ch
             if(ch == channel):
-                print('they are same this way woo \n')
+                self.channel = ch
 
         print(self.channel, type(self.channel), '\n')
         print(channel.name, self.channel, '\n')
-        print(ctx.guild.channels[self.channel])
+        print(self.channel in ctx.guild.channels)
+        print(ctx.guild.channels.index(self.channel))
+        print(ctx.guild.channels[ctx.guild.channels.index(self.channel)])
         return
         # if not channel in ctx.guild.channels:
         #     await ctx.send('Channel doesnt exist in guild')
