@@ -109,7 +109,7 @@ class WelcomeCog(commands.Cog):
     async def statistics(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
-        message = '```py Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\nTotal Logs = {4}```'.format(
+        message = '```py\n Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\nTotal Logs = {4}```'.format(
             self.dailyJoinedCount, self.dailyJoinedCount, self.totalJoinedCount, self.totalJoinedCount, self.totalLogs)
 
         await ctx.send(message)
