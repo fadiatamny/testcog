@@ -91,7 +91,7 @@ class WelcomeCog(commands.Cog):
                 print('Channel doesnt exist in guild')
                 print('User {0} joined'.format(member))
                 return
-            await member.guild.channels[self.channel].send("helloo")
+            await self.channel.send('{0} - has joined the server'.format(member))
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured! sending a dm to {member.display_name} didnt work !')
