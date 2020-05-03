@@ -66,24 +66,12 @@ class WelcomeCog(commands.Cog):
     @commands.command(name="channel")
     async def logChannel(self, ctx, channel: discord.TextChannel):
 
-        for ch in ctx.guild.channels:
-            if(ch == channel):
-                self.channel = ch
+        if not channel in ctx.guild.channels:
+            await ctx.send('Channel doesnt exist in guild')
+            return
 
-        print(self.channel, type(self.channel), '\n')
-        print(channel.name, self.channel, '\n')
-        print(self.channel in ctx.guild.channels)
-        print(ctx.guild.channels.index(self.channel))
-        print(ctx.guild.channels[ctx.guild.channels.index(self.channel)])
-        return
-        # if not channel in ctx.guild.channels:
-        #     await ctx.send('Channel doesnt exist in guild')
-        #     return
-
-        if not ctx.guild.channels[channel].permissions_for(ctx.guild.me).send_messages:
-            await ctx.send(
-                'No permissions to talk in that channel.'
-            )
+        if not channel.permissions_for(ctx.guild.me).send_messages:
+            await ctx.send('No permissions to talk in that channel.')
             return
 
         self.channel = channel
