@@ -21,7 +21,7 @@ class TrafficTracker(commands.Cog):
 
     def __checkClock(self):
         currdate = self.date - datetime.now()
-        if currdate.days >= 0 :
+        if currdate.seconds >= 0 :
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
             self.date = datetime.now()
