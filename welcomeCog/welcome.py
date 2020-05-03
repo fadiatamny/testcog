@@ -117,11 +117,15 @@ class WelcomeCog(commands.Cog):
         self.__checkClock()
         await ctx.trigger_typing()
 
-        statsString = '\nDaily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left = {3}\n------------------------\nTotal Logs = {4}'.format(
+        statsString = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left = {3}\n------------------------\nTotal Logs = {4}'.format(
             self.dailyJoinedCount, self.dailyLeftCount, self.totalJoinedCount, self.totalLeftCount, self.totalLogs)
-
-        message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n'.join(statsString))
+        message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n')
         message.set_thumbnail(url=statsThumbnailUrl)
+        message.add_field(name='Daily Joined', value=self.dailyJoinedCount, inline='True')
+        message.add_field(name='Daily Left', value=self.dailyLeftCount, inline='True')
+        message.add_field(name='Total Joined', value=self.totalJoinedCount, inline='True')
+        message.add_field(name='Total Left', value=self.totalLeftCount, inline='True')
+        message.add_field(name='Total Traffic', value=self.totalLogs, inline='False')
         await ctx.send(content=None, embed=message)
 
     @commands.command(name='resetstats', description='Resets statistics')
