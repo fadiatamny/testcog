@@ -67,8 +67,10 @@ class WelcomeCog(commands.Cog):
     async def logChannel(self, ctx, channel: discord.TextChannel):
 
         for ch in ctx.guild.channels:
-            if(ch == channel.name):
+            if(ch.name == channel.name):
                 self.channel = ch
+            if(ch == channel):
+                print('they are same this way woo \n')
 
         print(self.channel, type(self.channel), '\n')
         print(channel.name, self.channel, '\n')
