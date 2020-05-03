@@ -56,6 +56,7 @@ class WelcomeCog(commands.Cog):
 
     async def countReset(self):
         while True:
+            await self.channel.send('reseting')
             self.dailyJoinedCount = 0
             # await asyncio.sleep(86400)
             await asyncio.sleep(10)
