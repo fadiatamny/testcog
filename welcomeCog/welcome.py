@@ -48,11 +48,20 @@ def formatMessage(jsonFormat):
 class WelcomeCog(commands.Cog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.message = ''
-        self.channel = None
+        self.message: str = ''
+        self.channel: discord.TextChannel = None
+        self.dailyJoinedCount: int = 0
+        self.totalJoinedCount: int = 0
+        countReset()
+
+    async def countReset(self):
+        while True:
+            self.dailyJoinedCount = 0
+            # await asyncio.sleep(86400)
+            await asyncio.sleep(10)
 
     @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
-    async def previewMessage(self, ctx):
+    async def previewMessage(self, ctx: commands.Context) -> None:
         try:
             if ctx.guild.id not in allowed_guilds:
                 return
@@ -64,7 +73,7 @@ class WelcomeCog(commands.Cog):
             print(f'Error Occured!')
 
     @commands.command(name="channel")
-    async def logChannel(self, ctx, channel: discord.TextChannel):
+    async def logChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
 
         if not channel in ctx.guild.channels:
             await ctx.send('Channel doesnt exist in guild')
@@ -78,8 +87,19 @@ class WelcomeCog(commands.Cog):
 
         await ctx.send(f'I will now send event notices to {channel.mention}.')
 
+    @commands.command(name="stats")
+    async def statistics(self, ctx: commands.Context) -> None:
+
+        if not self.channel in ctx.guild.channels:
+            return
+
+        message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {3}\tTotal Left={4}'.format(
+            self.dailyJoinedCount, self.dailyJoinedCount, self.totalJoinedCount, self.totalJoinedCount)
+
+        await ctx.send(message)
+
     @commands.Cog.listener()
-    async def on_member_join(self, member: discord.Member):
+    async def on_member_join(self, member: discord.Member) -> None:
         try:
             if member.guild.id not in allowed_guilds:
                 return
@@ -88,10 +108,44 @@ class WelcomeCog(commands.Cog):
             message = formatMessage(self.message)
             await member.send(content=None, embed=message)
             if not self.channel in member.guild.channels:
-                print('Channel doesnt exist in guild')
-                print('User {0} joined'.format(member))
+                print('{0} - has joined the server'.format(member))
                 return
             await self.channel.send('{0} - has joined the server'.format(member))
+            self.totalJoinedCount += 1
+            self.dailyJoinedCount += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured! sending a dm to {member.display_name} didnt work !')
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member: discord.Member) -> None:
+        try:
+            if not self.channel in member.guild.channels:
+                print('{0} - has left the server'.format(member))
+                return
+            await self.channel.send('{0} - has left the server'.format(member))
+        except (discord.NotFound, discord.Forbidden):
+            print(
+                f'Error Occured!')
+
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
+        try:
+            if not self.channel in member.guild.channels:
+                print('{0} - has been banned from the server'.format(member))
+                return
+            await self.channel.send('{0} - has been banned from the server'.format(member))
+        except (discord.NotFound, discord.Forbidden):
+            print(
+                f'Error Occured!')
+
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
+        try:
+            if not self.channel in member.guild.channels:
+                print('{0} - has been unbanned from the server'.format(member))
+                return
+            await self.channel.send('{0} - has been unbanned from the server'.format(member))
+        except (discord.NotFound, discord.Forbidden):
+            print(
+                f'Error Occured!')
