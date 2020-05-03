@@ -93,10 +93,7 @@ class WelcomeCog(commands.Cog):
 
     @commands.command(name="stats")
     async def statistics(self, ctx: commands.Context) -> None:
-
-        if not self.channel in ctx.guild.channels:
-            return
-
+        
         message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {3}\tTotal Left={4}'.format(
             WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount)
 
