@@ -49,6 +49,9 @@ class WelcomeCog(commands.Cog):
 
     dailyJoinedCount: int = 0
     totalJoinedCount: int = 0
+    dailyLeftCount: int = 0
+    totalLeftCount: int = 0
+    totalLogs: int = 0
 
     def __init__(self, bot):
         self.bot = bot
@@ -59,10 +62,9 @@ class WelcomeCog(commands.Cog):
     @staticmethod
     async def countReset():
         while True:
-            print('reseting')
             WelcomeCog.dailyJoinedCount = 0
-            # await asyncio.sleep(86400)
-            await asyncio.sleep(10)
+            WelcomeCog.dailyLeftCount = 0
+            await asyncio.sleep(86400)
 
     @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
     async def previewMessage(self, ctx: commands.Context) -> None:
@@ -94,8 +96,8 @@ class WelcomeCog(commands.Cog):
     @commands.command(name="stats")
     async def statistics(self, ctx: commands.Context) -> None:
 
-        message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {3}\tTotal Left={4}'.format(
-            WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount)
+        message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\nTotal Logs = {4}'.format(
+            WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalLogs)
 
         await ctx.send(message)
 
@@ -112,8 +114,8 @@ class WelcomeCog(commands.Cog):
                 print('{0} - has joined the server'.format(member))
                 return
             await self.channel.send('{0} - has joined the server'.format(member))
-            self.totalJoinedCount += 1
-            self.dailyJoinedCount += 1
+            WelcomeCog.totalJoinedCount += 1
+            WelcomeCog.dailyJoinedCount += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured! sending a dm to {member.display_name} didnt work !')
@@ -125,6 +127,8 @@ class WelcomeCog(commands.Cog):
                 print('{0} - has left the server'.format(member))
                 return
             await self.channel.send('{0} - has left the server'.format(member))
+            WelcomeCog.totalLeftCount += 1
+            WelcomeCog.dailyLeftCount += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
