@@ -24,7 +24,7 @@ class WelcomeCog(commands.Cog):
         self.totalLeftCount: int = 0
         self.totalLogs: int = 0
         self.toggleLogs: bool = True
-        self.scheduler: bool = True
+        self.scheduler: bool = False
         self.task = None
 
     @staticmethod
@@ -178,7 +178,7 @@ class WelcomeCog(commands.Cog):
             message = WelcomeCog.formatMessage(self.message)
             await member.send(content=None, embed=message)
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('{0} - has joined the server'.format(member))
+                await self.channel.send('>>> @{0} - has joined the server'.format(member))
             self.totalJoinedCount += 1
             self.dailyJoinedCount += 1
             self.totalLogs += 1
@@ -190,7 +190,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('{0} - has left the server'.format(member))
+                await self.channel.send('>>> @{0} - has left the server'.format(member))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
             self.totalLogs += 1
@@ -201,10 +201,8 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
-            if not self.channel in member.guild.channels:
-                print('{0} - has been banned from the server'.format(member))
-                return
-            await self.channel.send('{0} - has been banned from the server'.format(member))
+            if self.channel in member.guild.channels and self.toggleLogs:
+                await self.channel.send('>>> @{0} - has been banned from the server'.format(member))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
@@ -213,10 +211,8 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
-            if not self.channel in member.guild.channels:
-                print('{0} - has been unbanned from the server'.format(member))
-                return
-            await self.channel.send('{0} - has been unbanned from the server'.format(member))
+            if self.channel in member.guild.channels and self.toggleLogs:
+                await self.channel.send('>>> @{0} - has been unbanned from the server'.format(member))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
