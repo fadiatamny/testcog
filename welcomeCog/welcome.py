@@ -76,7 +76,7 @@ class WelcomeCog(commands.Cog):
 
         self.channel = channel
 
-        await ctx.send(f"I will now send event notices to {channel.mention}.")
+        await ctx.send(f'I will now send event notices to {channel.mention}.')
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
