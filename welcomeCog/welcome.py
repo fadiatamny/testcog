@@ -24,6 +24,7 @@ class WelcomeCog(commands.Cog):
         self.totalLeftCount: int = 0
         self.totalLogs: int = 0
         self.toggleLogs: bool = True
+        self.scheduler: bool = True
         self.bot.loop.create_task(WelcomeCog.countReset(self))
 
     @staticmethod
