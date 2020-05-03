@@ -117,6 +117,7 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
         try:
+            print('joined', self.totalJoinedCount)
             if member.guild.id not in allowed_guilds:
                 return
             if self.message == '':
@@ -127,6 +128,7 @@ class WelcomeCog(commands.Cog):
                 await self.channel.send('{0} - has joined the server'.format(member))
             self.totalJoinedCount += 1
             self.dailyJoinedCount += 1
+            print('joined', self.totalJoinedCount)
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured! sending a dm to {member.display_name} didnt work !')
@@ -134,10 +136,12 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
+            print('left', self.totalLeftCount)
             if self.channel in member.guild.channels and self.toggleLogs:
                 await self.channel.send('{0} - has left the server'.format(member))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
+            print('left', self.totalLeftCount)
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
