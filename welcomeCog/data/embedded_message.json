@@ -2,17 +2,21 @@
     "title":"Welcome to the Kanium Discord!",
     "description":[
         "\n",
-        "Please ensure to have a look at our #public_info channel and understand who we are and how this place works.",
+        "Please ensure to read and understand the #info_and_rules channel, so that you may have some idea about who we are and how this place works.",
         "\n\n",
-        "Additionally it must be mentioned that being on our Discord and playing games with us, does not require Kanium membership. We,",
-        "on the other hand, expect that those who seek to apply for membership show earnestness- in both application and in becoming part of the community"
+        "Also, being on our Discord and playing games with us does Not require Kanium membership. In fact, applying for membership is something we prefer that people hold off on ",
+        "and consider carefully.",
+        "\n\n",
+        "Don't mistake our cautioning as unfriendliness, we are fun-loving weirdos that want new fun-loving weirdo-friends! We do, however, expect those that seek to apply for membership ", 
+        "show earnestness in the submitted application as well as in becoming part of the community."
     ],
     "color":"0x3399ff",
-    "thumbnail": "https://i.imgur.com/4TLdfDA.png",
+    "thumbnail": "https://www.kanium.org/machineroom/logomodern.png",
     "fields":[
-        {"id":"text", "name":"Apply to join Kanuim", "value":"!apply applicationText", "inline":"True"},
-        {"id":"text", "name":"Description", "value":"Use this to submit an application for joining Kanium", "inline":"True"},
-        {"id":"text", "name":"Enjoy your stay", "value":"Feel free to hang out in the chat rooms. If you're looking to play a specific game, join that game's chat channel", "inline":"False"},
+        {"id":"text", "name":"Apply for membership", "value":"!apply <applicationText>", "inline":"True"},
+        {"id":"text", "name":"Description", "value":"If you are certain about joining, use this command to do so", "inline":"True"},
+        {"id":"text", "name":"(shit) Example", "value":"!apply Hello, I am Dave and I would like to apply for Kanium for the following reasons...", "inline":"False"},
+        {"id":"text", "name":"Enjoy your stay!", "value":"With that out of the way, please feel free to hang out and be excellent to those around you. If you're looking to play a specific game, then simply look for that game's chat channel.", "inline":"False"},
         {"id":"links", "name":"Useful information", "value":[ 
             "\n",
             "[KANIUM Website](https://www.kanium.org/)",
@@ -21,9 +25,8 @@
             "\n",
             "[KANIUM Twitch Channel](https://twitch.tv/kaniumtv)",
             "\n",
-            "[KANIUM Open Collective](https://opencollective.com/kanium)"
-        ], "inline":"True"},
-        {"id":"text", "name":"Apply to join Kanuim", "value":"!apply applicationText", "inline":"True"}
+            "[KANIUM Open Collective (donations)](https://opencollective.com/kanium)"
+        ], "inline":"True"}
     ],
     "footer":{
         "text":"If you have any questions, please ping a @Recruiter",

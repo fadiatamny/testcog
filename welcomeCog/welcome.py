@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 import discord
 import json
+from datetime import datetime
 
 from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import box, humanize_list, pagify
@@ -10,7 +11,7 @@ url = 'https://raw.githubusercontent.com/Kanium/KaniumCogs/master/welcomeCog/dat
 
 allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
 admin_roles = {'Developer', 'admin', 'Council'}
-
+statsThumbnailUrl = 'https://www.kanium.org/machineroom/logomachine-small.png'
 
 class WelcomeCog(commands.Cog):
 
@@ -24,8 +25,7 @@ class WelcomeCog(commands.Cog):
         self.totalLeftCount: int = 0
         self.totalLogs: int = 0
         self.toggleLogs: bool = True
-        self.scheduler: bool = False
-        self.task = None
+        self.date = datetime.now()
 
     @staticmethod
     async def fetchMessage():
@@ -59,14 +59,16 @@ class WelcomeCog(commands.Cog):
             message = discord.Embed(
                 title='Kanium', description='', color=0x3399ff)
             message.add_field(
-                name="Welcome", value='Welcome To Kanium !', inline=True)
+                name='Welcome', value='Welcome To Kanium !', inline=True)
             return message
 
-    async def countReset(self):
-        while True:
+    def __checkClock(self):
+        currdate = self.date - datetime.now()
+        if currdate.day >= 0 :
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
-            await asyncio.sleep(86400)
+            self.date = datetime.now()
+            
 
     @commands.command(name='pullmessage', description='pulls the message from github again')
     @commands.has_any_role(*admin_roles)
@@ -112,12 +114,15 @@ class WelcomeCog(commands.Cog):
     @commands.command(name='stats', description='Shows current statistics')
     @commands.has_any_role(*admin_roles)
     async def statistics(self, ctx: commands.Context) -> None:
+        self.__checkClock()
         await ctx.trigger_typing()
 
-        message = '```py\nDaily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left = {3}\n------------------------\nTotal Logs = {4}```'.format(
+        statsString = '\nDaily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left = {3}\n------------------------\nTotal Logs = {4}'.format(
             self.dailyJoinedCount, self.dailyLeftCount, self.totalJoinedCount, self.totalLeftCount, self.totalLogs)
 
-        await ctx.send(message)
+        message = discord.Embed(title='Server Traffic Stats', description='Statistics on server activity\n\n'.join(statsString))
+        message.set_thumbnail(url=statsThumbnailUrl)
+        await ctx.send(content=None, embed=message)
 
     @commands.command(name='resetstats', description='Resets statistics')
     @commands.has_any_role(*admin_roles)
@@ -139,31 +144,6 @@ class WelcomeCog(commands.Cog):
         self.toggleLogs = not self.toggleLogs
         await ctx.send('Logging functionality is `ON`' if self.toggleLogs else 'Logging functionality is `OFF`')
 
-    @commands.command(name='stopscheduler', description='Stops the daily reset scheduler')
-    @commands.has_any_role(*admin_roles)
-    async def stopScheduler(self, ctx: commands.Context) -> None:
-        await ctx.trigger_typing()
-
-        if not self.scheduler:
-            await ctx.send('Scheduler is already `OFF`')
-            return
-        self.scheduler = False
-        self.task.cancel()
-        self.task = None
-        await ctx.send('Scheduler has been turned `OFF`')
-
-    @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
-    @commands.has_any_role(*admin_roles)
-    async def startScheduler(self, ctx: commands.Context) -> None:
-        await ctx.trigger_typing()
-
-        if self.scheduler:
-            await ctx.send('Scheduler is already `ON`')
-            return
-        self.scheduler = True
-        self.task = self.bot.loop.create_task(self.countReset())
-        await ctx.send('Scheduler has been turned `ON`')
-
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
         try:
@@ -173,8 +153,9 @@ class WelcomeCog(commands.Cog):
                 self.message = await WelcomeCog.fetchMessage()
             message = WelcomeCog.formatMessage(self.message)
             await member.send(content=None, embed=message)
+            self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> {0} - has joined the server'.format(member.mention))
+                await self.channel.send('>>> {0} has joined the server'.format(member.mention))
             self.totalJoinedCount += 1
             self.dailyJoinedCount += 1
             self.totalLogs += 1
@@ -185,8 +166,9 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
+            self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> {0} - has left the server'.format(member.mention))
+                await self.channel.send('>>> {0} has left the server'.format(member.mention))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
             self.totalLogs += 1
@@ -197,8 +179,9 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
+            self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> {0} - has been banned from the server'.format(member.mention))
+                await self.channel.send('>>> {0} has been banned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
@@ -207,8 +190,9 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
+            self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> {0} - has been unbanned from the server'.format(member.mention))
+                await self.channel.send('>>> {0} has been unbanned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
