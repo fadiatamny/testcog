@@ -67,8 +67,7 @@ class WelcomeCog(commands.Cog):
     async def logChannel(self, ctx, channel: discord.TextChannel):
 
         for ch in ctx.guild.channels:
-            if(ch.name == channel and isinstance(ch,discord.TextChannel)):
-                self.channel = ch
+            print(ch,'\n')
          
         # if not channel in ctx.guild.channels:
         #     await ctx.send('Channel doesnt exist in guild')
