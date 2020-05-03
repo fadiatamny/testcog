@@ -29,6 +29,9 @@ class WelcomeCog(commands.Cog):
     @staticmethod
     async def countReset(obj):
         while True:
+            if not obj.scheduler:
+                print('im done')
+                return
             obj.dailyJoinedCount = 0
             obj.dailyLeftCount = 0
             await asyncio.sleep(86400)
@@ -131,6 +134,38 @@ class WelcomeCog(commands.Cog):
         self.totalLogs = 0
 
         await ctx.send('Successfully reset the statistics')
+
+    @commands.command(name='toggleLogs', description='Toggles the logs functionality on or off')
+    @commands.has_any_role(*admin_roles)
+    async def statistics(self, ctx: commands.Context) -> None:
+        await ctx.trigger_typing()
+        self.toggleLogs = not self.toggleLogs
+        await ctx.send('Logging functionality is `ON`' if self.toggleLogs else 'Logging functionality is `OFF`')
+
+    @commands.command(name='stopscheduler', description='Stops the daily reset scheduler')
+    @commands.has_any_role(*admin_roles)
+    async def statistics(self, ctx: commands.Context) -> None:
+        await ctx.trigger_typing()
+
+        if not self.scheduler:
+            await ctx.send('Scheduler already `OFF`')
+            return
+
+        self.scheduler = False;
+        await ctx.send('Scheduler is `OFF`')
+
+    @commands.command(name='restartscheduler', description='Restarts the daily reset scheduler')
+    @commands.has_any_role(*admin_roles)
+    async def statistics(self, ctx: commands.Context) -> None:
+        await ctx.trigger_typing()
+
+        if self.scheduler:
+            await ctx.send('Scheduler already `ON`')
+            return
+
+        self.scheduler = True;
+        self.bot.loop.create_task(WelcomeCog.countReset(self))
+        await ctx.send('Scheduler is `ON`')
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
