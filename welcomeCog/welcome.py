@@ -82,6 +82,7 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         try:
+            print('hello')
             print(member.guild.id)
             print(member)
             if member.guild.id not in allowed_guilds:
