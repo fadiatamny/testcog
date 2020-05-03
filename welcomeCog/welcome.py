@@ -70,8 +70,9 @@ class WelcomeCog(commands.Cog):
             if(ch == channel.name):
                 self.channel = ch
 
-        print(self.channel, type(self.channel))
-        print(channel.name, self.channel)
+        print(self.channel, type(self.channel), '\n')
+        print(channel.name, self.channel, '\n')
+        print(ctx.guild.channels[self.channel])
         return
         # if not channel in ctx.guild.channels:
         #     await ctx.send('Channel doesnt exist in guild')
