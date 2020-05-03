@@ -9,7 +9,7 @@ from redbot.core.utils.chat_formatting import box, humanize_list, pagify
 url = 'https://raw.githubusercontent.com/Kanium/KaniumCogs/master/welcomeCog/data/embedded_message.json'
 
 allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
-
+admin_roles = ['Admin','Developer']
 
 class WelcomeCog(commands.Cog):
 
@@ -68,6 +68,7 @@ class WelcomeCog(commands.Cog):
             return message
 
     @commands.command(name='pullmessage', description='pulls the message from github again')
+    @commands.has_any_role(admin_roles)
     async def pullMessage(self, ctx: commands.Context) -> None:
         try:
             await ctx.trigger_typing()
@@ -77,6 +78,7 @@ class WelcomeCog(commands.Cog):
             print('error occured fetching message')
 
     @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
+    @commands.has_any_role(admin_roles)
     async def previewMessage(self, ctx: commands.Context) -> None:
         try:
             await ctx.trigger_typing()
@@ -90,6 +92,7 @@ class WelcomeCog(commands.Cog):
             print(f'Error Occured!')
 
     @commands.command(name='channel', description='Sets the channel to sends log to')
+    @commands.has_any_role(admin_roles)
     async def logChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
         await ctx.trigger_typing()
 
@@ -106,6 +109,7 @@ class WelcomeCog(commands.Cog):
         await ctx.send(f'I will now send event notices to {channel.mention}.')
 
     @commands.command(name='stats', description='Shows current statistics')
+    @commands.has_any_role(admin_roles)
     async def statistics(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
@@ -115,6 +119,7 @@ class WelcomeCog(commands.Cog):
         await ctx.send(message)
 
     @commands.command(name='resetstats', description='Resets statistics')
+    @commands.has_any_role(admin_roles)
     async def statistics(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
