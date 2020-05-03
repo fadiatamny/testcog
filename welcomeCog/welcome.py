@@ -92,9 +92,9 @@ class WelcomeCog(commands.Cog):
         except():
             print(f'Error Occured!')
 
-    @commands.command(name='channel', description='Sets the channel to sends log to')
+    @commands.command(name='setchannel', description='Sets the channel to sends log to')
     @commands.has_any_role(*admin_roles)
-    async def logChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
+    async def setChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
         await ctx.trigger_typing()
 
         if not channel in ctx.guild.channels:
@@ -147,11 +147,9 @@ class WelcomeCog(commands.Cog):
         if not self.scheduler:
             await ctx.send('Scheduler is already `OFF`')
             return
-        print('before', len(asyncio.all_tasks()))
         self.scheduler = False
         self.task.cancel()
         self.task = None
-        print('after', len(asyncio.all_tasks()))
         await ctx.send('Scheduler has been turned `OFF`')
 
     @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
@@ -162,10 +160,8 @@ class WelcomeCog(commands.Cog):
         if self.scheduler:
             await ctx.send('Scheduler is already `ON`')
             return
-        print('before', len(asyncio.all_tasks()))
         self.scheduler = True
         self.task = self.bot.loop.create_task(self.countReset())
-        print('after', len(asyncio.all_tasks()))
         await ctx.send('Scheduler has been turned `ON`')
 
     @commands.Cog.listener()
@@ -178,7 +174,7 @@ class WelcomeCog(commands.Cog):
             message = WelcomeCog.formatMessage(self.message)
             await member.send(content=None, embed=message)
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has joined the server'.format(member))
+                await self.channel.send('>>> {0} - has joined the server'.format(member.mention))
             self.totalJoinedCount += 1
             self.dailyJoinedCount += 1
             self.totalLogs += 1
@@ -190,7 +186,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has left the server'.format(member))
+                await self.channel.send('>>> @{0} - has left the server'.format(member.mention))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
             self.totalLogs += 1
@@ -202,7 +198,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has been banned from the server'.format(member))
+                await self.channel.send('>>> @{0} - has been banned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
@@ -212,7 +208,7 @@ class WelcomeCog(commands.Cog):
     async def on_member_ban(self, guild: discord.Guild, member: discord.Member) -> None:
         try:
             if self.channel in member.guild.channels and self.toggleLogs:
-                await self.channel.send('>>> @{0} - has been unbanned from the server'.format(member))
+                await self.channel.send('>>> @{0} - has been unbanned from the server'.format(member.mention))
             self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
