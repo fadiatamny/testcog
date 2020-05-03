@@ -49,7 +49,7 @@ class WelcomeCog(commands.Cog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.message = ''
-        self.channel: discord.TextChannel = None
+        self.channel = None
 
     @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
     async def previewMessage(self, ctx):
@@ -67,8 +67,12 @@ class WelcomeCog(commands.Cog):
     async def logChannel(self, ctx, channel: discord.TextChannel):
 
         for ch in ctx.guild.channels:
-            print(ch,'\n')
-         
+            if(ch == channel.name):
+                self.channel = ch
+
+        print(self.channel, type(self.channel))
+        print(channel.name, self.channel)
+        return
         # if not channel in ctx.guild.channels:
         #     await ctx.send('Channel doesnt exist in guild')
         #     return
