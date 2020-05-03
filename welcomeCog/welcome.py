@@ -46,18 +46,21 @@ def formatMessage(jsonFormat):
 
 
 class WelcomeCog(commands.Cog):
+
+    dailyJoinedCount: int = 0
+    totalJoinedCount: int = 0
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.message: str = ''
         self.channel: discord.TextChannel = None
-        self.dailyJoinedCount: int = 0
-        self.totalJoinedCount: int = 0
-        countReset()
+        WelcomeCog.countReset()
 
-    async def countReset(self):
+    @staticmethod
+    async def countReset():
         while True:
-            await self.channel.send('reseting')
-            self.dailyJoinedCount = 0
+            print('reseting')
+            WelcomeCog.dailyJoinedCount = 0
             # await asyncio.sleep(86400)
             await asyncio.sleep(10)
 
@@ -95,7 +98,7 @@ class WelcomeCog(commands.Cog):
             return
 
         message = 'Daily Joined = {0}\tDaily Left = {1}\nTotal Joined = {3}\tTotal Left={4}'.format(
-            self.dailyJoinedCount, self.dailyJoinedCount, self.totalJoinedCount, self.totalJoinedCount)
+            WelcomeCog.dailyJoinedCount, WelcomeCog.dailyJoinedCount, WelcomeCog.totalJoinedCount, WelcomeCog.totalJoinedCount)
 
         await ctx.send(message)
 
