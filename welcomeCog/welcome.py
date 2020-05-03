@@ -121,7 +121,7 @@ class WelcomeCog(commands.Cog):
 
     @commands.command(name='resetstats', description='Resets statistics')
     @commands.has_any_role(*admin_roles)
-    async def statistics(self, ctx: commands.Context) -> None:
+    async def resetStatistics(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
         self.dailyJoinedCount = 0
