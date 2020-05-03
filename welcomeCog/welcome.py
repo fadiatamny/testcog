@@ -28,16 +28,6 @@ class WelcomeCog(commands.Cog):
         self.bot.loop.create_task(WelcomeCog.countReset(self))
 
     @staticmethod
-    async def countReset(obj):
-        while True:
-            if not obj.scheduler:
-                print('im done')
-                return
-            obj.dailyJoinedCount = 0
-            obj.dailyLeftCount = 0
-            await asyncio.sleep(86400)
-
-    @staticmethod
     async def fetchMessage():
         async def fetch():
             async with aiohttp.ClientSession() as session:
@@ -71,6 +61,16 @@ class WelcomeCog(commands.Cog):
             message.add_field(
                 name="Welcome", value='Welcome To Kanium !', inline=True)
             return message
+
+    async def countReset(self):
+        while True:
+            if not self.scheduler:
+                print('im done')
+                return
+            self.dailyJoinedCount = 0
+            self.dailyLeftCount = 0
+            await asyncio.sleep(10)
+
 
     @commands.command(name='pullmessage', description='pulls the message from github again')
     @commands.has_any_role(*admin_roles)
@@ -155,9 +155,9 @@ class WelcomeCog(commands.Cog):
         self.scheduler = False;
         await ctx.send('Scheduler is `OFF`')
 
-    @commands.command(name='restartscheduler', description='Restarts the daily reset scheduler')
+    @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
     @commands.has_any_role(*admin_roles)
-    async def restartScheduler(self, ctx: commands.Context) -> None:
+    async def startScheduler(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
         if self.scheduler:
