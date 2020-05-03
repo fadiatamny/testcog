@@ -89,7 +89,7 @@ class WelcomeCog(commands.Cog):
         except():
             print(f'Error Occured!')
 
-    @commands.command(name="channel")
+    @commands.command(name='channel', description='Sets the channel to sends log to')
     async def logChannel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
         await ctx.trigger_typing()
 
@@ -105,19 +105,30 @@ class WelcomeCog(commands.Cog):
 
         await ctx.send(f'I will now send event notices to {channel.mention}.')
 
-    @commands.command(name="stats")
+    @commands.command(name='stats', description='Shows current statistics')
     async def statistics(self, ctx: commands.Context) -> None:
         await ctx.trigger_typing()
 
         message = '```py\nDaily Joined = {0}\tDaily Left = {1}\nTotal Joined = {2}\tTotal Left={3}\n------------------------\nTotal Logs = {4}```'.format(
-            self.dailyJoinedCount, self.dailyJoinedCount, self.totalJoinedCount, self.totalJoinedCount, self.totalLogs)
+            self.dailyJoinedCount, self.dailyLeftCount, self.totalJoinedCount, self.totalLeftCount, self.totalLogs)
 
         await ctx.send(message)
+
+    @commands.command(name='resetstats', description='Resets statistics')
+    async def statistics(self, ctx: commands.Context) -> None:
+        await ctx.trigger_typing()
+
+        self.dailyJoinedCount = 0
+        self.dailyLeftCount = 0
+        self.totalJoinedCount = 0
+        self.totalLeftCount = 0
+        self.totalLogs = 0
+
+        await ctx.send('Successfully reset the statistics')
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
         try:
-            print('joined', self.totalJoinedCount)
             if member.guild.id not in allowed_guilds:
                 return
             if self.message == '':
@@ -128,7 +139,7 @@ class WelcomeCog(commands.Cog):
                 await self.channel.send('{0} - has joined the server'.format(member))
             self.totalJoinedCount += 1
             self.dailyJoinedCount += 1
-            print('joined', self.totalJoinedCount)
+            self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured! sending a dm to {member.display_name} didnt work !')
@@ -136,12 +147,11 @@ class WelcomeCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member) -> None:
         try:
-            print('left', self.totalLeftCount)
             if self.channel in member.guild.channels and self.toggleLogs:
                 await self.channel.send('{0} - has left the server'.format(member))
             self.totalLeftCount += 1
             self.dailyLeftCount += 1
-            print('left', self.totalLeftCount)
+            self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
@@ -153,6 +163,7 @@ class WelcomeCog(commands.Cog):
                 print('{0} - has been banned from the server'.format(member))
                 return
             await self.channel.send('{0} - has been banned from the server'.format(member))
+            self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
@@ -164,6 +175,7 @@ class WelcomeCog(commands.Cog):
                 print('{0} - has been unbanned from the server'.format(member))
                 return
             await self.channel.send('{0} - has been unbanned from the server'.format(member))
+            self.totalLogs += 1
         except (discord.NotFound, discord.Forbidden):
             print(
                 f'Error Occured!')
