@@ -25,6 +25,7 @@ class WelcomeCog(commands.Cog):
         self.totalLogs: int = 0
         self.toggleLogs: bool = True
         self.scheduler: bool = True
+        self.task = None
 
     @staticmethod
     async def fetchMessage():
@@ -66,7 +67,6 @@ class WelcomeCog(commands.Cog):
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
             await asyncio.sleep(86400)
-
 
     @commands.command(name='pullmessage', description='pulls the message from github again')
     @commands.has_any_role(*admin_roles)
@@ -148,8 +148,10 @@ class WelcomeCog(commands.Cog):
             await ctx.send('Scheduler already `OFF`')
             return
 
-        self.scheduler = False;
-        print(asyncio.Task.all_tasks())
+        self.scheduler = False
+        self.task.cancel()
+        self.task = None
+
         await ctx.send('Scheduler is `OFF`')
 
     @commands.command(name='startscheduler', description='Starts the daily reset scheduler')
@@ -161,8 +163,9 @@ class WelcomeCog(commands.Cog):
             await ctx.send('Scheduler already `ON`')
             return
 
-        self.scheduler = True;
-        self.bot.loop.create_task(WelcomeCog.countReset(self))
+        self.scheduler = True
+        self.task = self.bot.loop.create_task(self.countReset())
+
         await ctx.send('Scheduler is `ON`')
 
     @commands.Cog.listener()
