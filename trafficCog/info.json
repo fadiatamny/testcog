@@ -3,7 +3,7 @@
         "Deathblade"
     ],
     "install_msg": "May Kanium broaden your horizons",
-    "name": "TrafficTracker",
+    "name": "TrafficCog",
     "short": "Tracks daily activity on the server",
     "description": "Tracks incoming and outgoing member activity on the server with daily resets",
     "requirements": ["datetime"],
