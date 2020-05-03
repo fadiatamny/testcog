@@ -54,7 +54,7 @@ class WelcomeCog(commands.Cog):
         super().__init__(*args, **kwargs)
         self.message: str = ''
         self.channel: discord.TextChannel = None
-        WelcomeCog.countReset()
+        commands.loop.create_task(WelcomeCog.countReset())
 
     @staticmethod
     async def countReset():
