@@ -6,7 +6,7 @@
     "name": "Welcome",
     "short": "Sends a welcome dm thats written in a specific format to the users",
     "description": "Sends a welcome dm thats written in a specific format to the users",
-    "requirements": ["aiohttp","datetime"],
+    "requirements": ["aiohttp"],
     "tags": [
         "welcome"
     ]

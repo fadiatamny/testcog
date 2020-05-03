@@ -1,0 +1,13 @@
+{
+    "author": [
+        "Deathblade"
+    ],
+    "install_msg": "May Kanuim broaden your horizons",
+    "name": "TrafficTracker",
+    "short": "Tracks daily activity on the server",
+    "description": "Tracks incoming and outgoing member activity on the server with daily resets",
+    "requirements": ["aiohttp","datetime"],
+    "tags": [
+        "Traffic"
+    ]
+}

@@ -1,13 +1,8 @@
-import asyncio
-import aiohttp
 import discord
-import json
 from datetime import datetime
 
 from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import box, humanize_list, pagify
-
-url = 'https://raw.githubusercontent.com/Kanium/KaniumCogs/master/welcomeCog/data/embedded_message.json'
 
 allowed_guilds = {274657393936302080, 693796372092289024, 508781789737648138}
 admin_roles = {'Developer', 'admin', 'Council'}
@@ -16,8 +11,6 @@ statsThumbnailUrl = 'https://www.kanium.org/machineroom/logomachine-small.png'
 class TrafficTrack(commands.Cog):
 
     def __init__(self, bot):
-        self.bot = bot
-        self.message: str = ''
         self.channel: discord.TextChannel = None
         self.dailyJoinedCount: int = 0
         self.totalJoinedCount: int = 0
@@ -27,72 +20,12 @@ class TrafficTrack(commands.Cog):
         self.toggleLogs: bool = True
         self.date = datetime.now()
 
-    @staticmethod
-    async def fetchMessage():
-        async def fetch():
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
-                    html = await response.text()
-                    x = json.loads(str(html))
-                    return x
-        return await fetch()
-
-    @staticmethod
-    def formatMessage(jsonFormat: str):
-        try:
-            message = discord.Embed(title=str(jsonFormat['title']), description=''.join(
-                map(str, jsonFormat['description'])), color=int(jsonFormat['color'], 16))
-            message.set_thumbnail(url=jsonFormat['thumbnail'])
-            for field in jsonFormat['fields']:
-                if(field['id'] != 'links'):
-                    message.add_field(
-                        name=field['name'], value=field['value'], inline=field['inline'])
-                else:
-                    message.add_field(name=field['name'], value=''.join(
-                        map(str, field['value'])), inline=field['inline'])
-
-            message.set_footer(
-                text=jsonFormat['footer']['text'], icon_url=jsonFormat['footer']['icon_url'])
-            return message
-
-        except:
-            message = discord.Embed(
-                title='Kanium', description='', color=0x3399ff)
-            message.add_field(
-                name='Welcome', value='Welcome To Kanium !', inline=True)
-            return message
-
     def __checkClock(self):
         currdate = self.date - datetime.now()
         if currdate.days >= 0 :
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
             self.date = datetime.now()
-            
-
-    @commands.command(name='pullmessage', description='pulls the message from github again')
-    @commands.has_any_role(*admin_roles)
-    async def pullMessage(self, ctx: commands.Context) -> None:
-        try:
-            await ctx.trigger_typing()
-            self.message = await WelcomeCog.fetchMessage()
-            await ctx.send('Welcome message updated')
-        except:
-            print('error occured fetching message')
-
-    @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
-    @commands.has_any_role(*admin_roles)
-    async def previewMessage(self, ctx: commands.Context) -> None:
-        try:
-            await ctx.trigger_typing()
-            if ctx.guild.id not in allowed_guilds:
-                return
-            if self.message == '':
-                self.message = await WelcomeCog.fetchMessage()
-            message = WelcomeCog.formatMessage(self.message)
-            await ctx.send(content=None, embed=message)
-        except():
-            print(f'Error Occured!')
 
     @commands.command(name='setchannel', description='Sets the channel to sends log to')
     @commands.has_any_role(*admin_roles)
@@ -150,10 +83,6 @@ class TrafficTrack(commands.Cog):
         try:
             if member.guild.id not in allowed_guilds:
                 return
-            if self.message == '':
-                self.message = await WelcomeCog.fetchMessage()
-            message = WelcomeCog.formatMessage(self.message)
-            await member.send(content=None, embed=message)
             self.__checkClock()
             if self.channel in member.guild.channels and self.toggleLogs:
                 await self.channel.send('>>> {0} has joined the server'.format(member.mention))

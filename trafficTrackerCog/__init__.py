@@ -1,5 +1,5 @@
-from .welcome import WelcomeCog
+from .trafficTrack import TrafficTrack
 from redbot.core.bot import Red
 
 def setup(bot: Red):
-    bot.add_cog(WelcomeCog(bot))
+    bot.add_cog(TrafficTrack(bot))
