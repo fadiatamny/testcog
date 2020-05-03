@@ -49,7 +49,7 @@ class WelcomeCog(commands.Cog):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.message = ''
-        self.channel = 'logs'
+        self.channel: discord.TextChannel = None
 
     @commands.command(name='welcomepreview', case_insensitive=True, description='Shows a preview of the welcome message')
     async def previewMessage(self, ctx):
@@ -64,7 +64,8 @@ class WelcomeCog(commands.Cog):
             print(f'Error Occured!')
 
     @commands.command(name="channel")
-    async def welcomeset_channel(self, ctx, channel):
+    async def logChannel(self, ctx, channel: discord.TextChannel):
+
         if not channel in ctx.guild.channels:
             await ctx.send('Channel doesnt exist in guild')
             return
@@ -77,29 +78,21 @@ class WelcomeCog(commands.Cog):
 
         self.channel = channel
 
-        await ctx.send(f"I will now send event notices to #{channel}.")
+        await ctx.send(f"I will now send event notices to {channel.mention}.")
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         try:
-            await member.send('hi')
-            await member.send(member.guild.id)
-
             if member.guild.id not in allowed_guilds:
                 return
-
             if self.message == '':
                 self.message = await fetchMessage()
-
             message = formatMessage(self.message)
             await member.send(content=None, embed=message)
-
-            print(member.guild.channels)
             if not self.channel in member.guild.channels:
-                print('Channel doesnt exist log didnt record on discord')
-                print('member {0} joined'.format(member))
+                print('Channel doesnt exist in guild')
+                print('User {0} joined'.format(member))
                 return
-
             await member.guild.channels[self.channel].send("helloo")
         except (discord.NotFound, discord.Forbidden):
             print(
