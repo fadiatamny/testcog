@@ -1,5 +1,5 @@
 import discord
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from redbot.core import Config, commands
 
@@ -21,7 +21,7 @@ class TrafficCog(commands.Cog):
         self.date = datetime.now()
 
     def __checkClock(self):
-        currdate = datetime.now() - datetime.timedelta(hours=24, minutes=0, seconds=0)
+        currdate = datetime.now() - timedelta(hours=24, minutes=0, seconds=0)
         print(currdate, self.date)
         if currdate >= self.date:
             print("cleaned yoo")
