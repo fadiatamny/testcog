@@ -21,10 +21,8 @@ class TrafficCog(commands.Cog):
         self.date = datetime.now()
 
     def __checkClock(self):
-        currdate = datetime.now() - timedelta(hours=0, minutes=0, seconds=10)
-        print(currdate, self.date)
+        currdate = datetime.now() - timedelta(hours=24)
         if currdate >= self.date:
-            print("cleaned yoo")
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
             self.date = datetime.now()
