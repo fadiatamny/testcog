@@ -24,6 +24,7 @@ class TrafficCog(commands.Cog):
         currdate = self.date - datetime.now()
         print(currdate.seconds, currdate)
         if currdate.seconds >= 0:
+            print("cleaned yoo")
             self.dailyJoinedCount = 0
             self.dailyLeftCount = 0
             self.date = datetime.now()
